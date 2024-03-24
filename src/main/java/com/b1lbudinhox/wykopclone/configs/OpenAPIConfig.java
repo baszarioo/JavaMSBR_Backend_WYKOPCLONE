@@ -15,6 +15,6 @@ public class OpenAPIConfig {
                         .description("API for wykop clone app")
                         .version("v0.0.1 alpha")
                         .license(new License().name("Apache License Version 2.0")
-                                .url("github@baszarioo")));
+                                 .url("github@baszarioo")));
     }
 }
