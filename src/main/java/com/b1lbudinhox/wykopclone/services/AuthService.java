@@ -1,6 +1,7 @@
 package com.b1lbudinhox.wykopclone.services;
 
 import com.b1lbudinhox.wykopclone.dtos.RegisterRequestDto;
+import com.b1lbudinhox.wykopclone.exceptions.SpringAppException;
 import com.b1lbudinhox.wykopclone.models.NotificaitonMail;
 import com.b1lbudinhox.wykopclone.models.User;
 import com.b1lbudinhox.wykopclone.models.VerificationToken;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,5 +45,15 @@ public class AuthService {
         verificationToken.setUser(user);
         verificationTokenRepository.save(verificationToken);
         return token;
+    }
+    public void verifyAccount(String token) {
+        Optional<VerificationToken>  verificationToken = verificationTokenRepository.findByToken(token);
+        fetchUserAndEnable(verificationToken.orElseThrow(() -> new SpringAppException("Invalid Token")));
+    }
+    private void fetchUserAndEnable(VerificationToken verificationToken){
+        String username = verificationToken.getUser().getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringAppException("Couldn't find user with name of: "+username));
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 }
