@@ -1,7 +1,11 @@
 package com.b1lbudinhox.wykopclone.controllers;
 
+import com.b1lbudinhox.wykopclone.dtos.AuthenticationResponseDto;
+import com.b1lbudinhox.wykopclone.dtos.LoginRequestDto;
+import com.b1lbudinhox.wykopclone.dtos.RefreshTokenRequestDto;
 import com.b1lbudinhox.wykopclone.dtos.RegisterRequestDto;
 import com.b1lbudinhox.wykopclone.services.AuthService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +25,19 @@ public class AuthController {
     @GetMapping("accountVerification/{token}")
     public ResponseEntity<String> verifyAccount(@PathVariable String token) {
         authService.verifyAccount(token);
-        return new ResponseEntity(OK);
+        return new ResponseEntity<>("Account Activated Successfully", OK);
+    }
+    @PostMapping("/login")
+    public AuthenticationResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
+        return authService.login(loginRequestDto);
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        return ResponseEntity.status(OK).body("Refresh Token Deleted ...");
+    }
+    @PostMapping("/refresh/token")
+    public AuthenticationResponseDto refreshTokens(@Valid @RequestBody
+                                                       RefreshTokenRequestDto refreshTokenRequestDto) {
+        return authService.refreshToken(refreshTokenRequestDto);
     }
 }

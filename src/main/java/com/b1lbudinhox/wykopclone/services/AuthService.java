@@ -1,5 +1,8 @@
 package com.b1lbudinhox.wykopclone.services;
 
+import com.b1lbudinhox.wykopclone.dtos.AuthenticationResponseDto;
+import com.b1lbudinhox.wykopclone.dtos.LoginRequestDto;
+import com.b1lbudinhox.wykopclone.dtos.RefreshTokenRequestDto;
 import com.b1lbudinhox.wykopclone.dtos.RegisterRequestDto;
 import com.b1lbudinhox.wykopclone.exceptions.SpringAppException;
 import com.b1lbudinhox.wykopclone.models.NotificaitonMail;
@@ -9,12 +12,18 @@ import com.b1lbudinhox.wykopclone.repositories.UserRepository;
 import com.b1lbudinhox.wykopclone.repositories.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
+
+import static java.time.LocalTime.now;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +40,7 @@ public class AuthService {
         user.setEmail(registerRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
         user.setEnabled(false);
+        user.setRegistered(Instant.now());
         userRepository.save(user);
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificaitonMail("Prosimy o aktyywację konta ", user.getEmail(),user.getUsername(),
@@ -55,5 +65,16 @@ public class AuthService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringAppException("Couldn't find user with name of: "+username));
         user.setEnabled(true);
         userRepository.save(user);
+    }
+    public AuthenticationResponseDto login(LoginRequestDto loginRequestDto) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),
+//                        loginRequestDto.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return new AuthenticationResponseDto();
+    }
+    public AuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto) {
+//        TODO: Implement valid refreshtoken functionality.
+        return new AuthenticationResponseDto();
     }
 }
