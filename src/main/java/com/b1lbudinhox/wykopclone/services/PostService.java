@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@NoArgsConstructor
 @AllArgsConstructor
 public class PostService {
     public void save(PostRequestDto postRequestDto) {
