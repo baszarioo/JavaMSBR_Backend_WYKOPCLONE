@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface ThreadRepository extends JpaRepository<Thread, Long> {
-    Optional<Thread> findByName(String threadName);
+    Optional<Thread> findByTagName(String threadName);
 }

@@ -40,7 +40,7 @@ public class AuthService {
         user.setEmail(registerRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequestDto.getPassword()));
         user.setEnabled(false);
-        user.setRegistered(Instant.now());
+        user.setCreated(Instant.now());
         userRepository.save(user);
         String token = generateVerificationToken(user);
         mailService.sendMail(new NotificaitonMail("Prosimy o aktyywację konta ", user.getEmail(),user.getUsername(),
