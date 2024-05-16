@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findAllByTag(Thread thread);
+    List<Post> findAllByThread(Thread thread);
 
     List<Post> findByUser(User user);
 }

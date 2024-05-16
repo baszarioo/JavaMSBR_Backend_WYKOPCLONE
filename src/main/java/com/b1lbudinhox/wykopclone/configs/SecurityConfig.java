@@ -77,7 +77,7 @@ public class SecurityConfig {
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-                ).build();
+                );
         return httpSecurity.build();
     }
     @Bean
