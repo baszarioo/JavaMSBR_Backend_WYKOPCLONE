@@ -10,6 +10,7 @@ import com.b1lbudinhox.wykopclone.models.User;
 import com.b1lbudinhox.wykopclone.models.VerificationToken;
 import com.b1lbudinhox.wykopclone.repositories.UserRepository;
 import com.b1lbudinhox.wykopclone.repositories.VerificationTokenRepository;
+import com.b1lbudinhox.wykopclone.security.JwtProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,8 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
     private final AuthenticationManager authenticationManager;
+    private final JwtProvider jwtProvider;
+    private final RefreshTokenService refreshTokenService;
     @Transactional
     public void signUp(RegisterRequestDto registerRequestDto){
         User user = new User();
@@ -67,14 +70,27 @@ public class AuthService {
         userRepository.save(user);
     }
     public AuthenticationResponseDto login(LoginRequestDto loginRequestDto) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginRequestDto.getUsername(),
-//                        loginRequestDto.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new AuthenticationResponseDto();
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            loginRequestDto.getUsername(), loginRequestDto.getPassword()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtProvider.generateToken(authentication);
+        return AuthenticationResponseDto.builder().authenticationToken(token).
+                refreshToken(refreshTokenService.generateRefreshToken().getToken())
+                .expirationDate(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .build();
     }
     public AuthenticationResponseDto refreshToken(RefreshTokenRequestDto refreshTokenRequestDto) {
-//        TODO: Implement valid refreshtoken functionality.
-        return new AuthenticationResponseDto();
+        refreshTokenService.validateRefreshToken(refreshTokenRequestDto.getRefreshToken());
+        String newAuthToken = jwtProvider.generateTokenWithUsername(refreshTokenRequestDto.getUsername());
+        String refreshToken = refreshTokenRequestDto.getRefreshToken();
+        // String refreshToken = refreshTokenService.enerateRefreshToken(refreshTokenRequest.getUsername()).getToken();
+        refreshTokenService.deleteRefreshToken(refreshTokenRequestDto.getRefreshToken());
+        return AuthenticationResponseDto.builder()
+                .authenticationToken(newAuthToken)
+                .refreshToken(refreshToken)
+                .expirationDate(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(refreshTokenRequestDto.getUsername())
+                .build();
     }
 }
