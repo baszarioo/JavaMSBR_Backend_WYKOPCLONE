@@ -24,7 +24,8 @@ public class MailService {
             messageHelper.setFrom("wykopwypokclone@springbootemail.com");
             messageHelper.setTo(notificaitonMail.getRecipient());
             messageHelper.setSubject(notificaitonMail.getSubject());
-            messageHelper.setText(mailContentBuilder.build(notificaitonMail.getMailBody(), notificaitonMail.getUsername(), notificaitonMail.getRecipient()));
+            messageHelper.setText(mailContentBuilder.build(notificaitonMail.getMailBody(), notificaitonMail.getSubject(), notificaitonMail.getRecipient()));
+            // TODO: Add notificationMail.getUsername() srvc.
         };
         try {
             javaMailSender.send(messagePreparator);

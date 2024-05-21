@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class NotificaitonMail {
     private String subject;
     private String recipient;
-    private String username;
+//    private String username;
     private String mailBody;
 }

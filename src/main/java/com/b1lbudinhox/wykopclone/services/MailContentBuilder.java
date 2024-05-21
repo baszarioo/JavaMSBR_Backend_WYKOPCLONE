@@ -18,4 +18,9 @@ public class MailContentBuilder {
         context.setVariable("recipient", recipient);
         return templateEngine.process("registrationConfirmationMailTemplate", context);
     }
+    public String build(String message) {
+        Context context = new Context();
+        context.setVariable("message", message);
+        return templateEngine.process("mailTemplate:", context);
+    }
 }

@@ -46,7 +46,8 @@ public class AuthService {
         user.setCreated(Instant.now());
         userRepository.save(user);
         String token = generateVerificationToken(user);
-        mailService.sendMail(new NotificaitonMail("Prosimy o aktyywację konta ", user.getEmail(),user.getUsername(),
+        mailService.sendMail(new NotificaitonMail("Prosimy o aktyywację konta ", user.getEmail(),
+//                user.getUsername()    /* abandoned, TODO: */
                 "Dziękujemy za rejestrację na wykopClone! " +
                 "Wciśnij link poniżej aby aktywować swoje konto: " +
                 "http://localhost:8080/api/auth/accountVerification/" + token));
