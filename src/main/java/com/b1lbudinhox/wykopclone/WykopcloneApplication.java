@@ -7,8 +7,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @EnableAsync
 public class WykopcloneApplication {
-
 	public static void main(String[] args) {
+
+		System.out.println(org.hibernate.Version.getVersionString());
 		SpringApplication.run(WykopcloneApplication.class, args);
 	}
 

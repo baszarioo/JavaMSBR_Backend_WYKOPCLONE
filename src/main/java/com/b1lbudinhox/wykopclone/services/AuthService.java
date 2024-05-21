@@ -93,4 +93,14 @@ public class AuthService {
                 .username(refreshTokenRequestDto.getUsername())
                 .build();
     }
+    @Transactional(readOnly = true)
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+        String username = authentication.getName();
+        Optional<User> userOptional = userRepository.findByUsername(username);
+        return userOptional.orElse(null);
+    }
 }
