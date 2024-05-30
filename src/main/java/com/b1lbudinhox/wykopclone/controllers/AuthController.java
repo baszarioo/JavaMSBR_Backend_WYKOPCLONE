@@ -5,6 +5,7 @@ import com.b1lbudinhox.wykopclone.dtos.LoginRequestDto;
 import com.b1lbudinhox.wykopclone.dtos.RefreshTokenRequestDto;
 import com.b1lbudinhox.wykopclone.dtos.RegisterRequestDto;
 import com.b1lbudinhox.wykopclone.services.AuthService;
+import com.b1lbudinhox.wykopclone.services.RefreshTokenService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final RefreshTokenService refreshTokenService;
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterRequestDto registerRequestDto) {
         authService.signUp(registerRequestDto);
@@ -34,6 +36,7 @@ public class AuthController {
     }
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        refreshTokenService.deleteRefreshToken(refreshTokenRequestDto.getRefreshToken());
         return ResponseEntity.status(OK).body("Refresh Token Deleted ...");
     }
     @PostMapping("/refresh/token")

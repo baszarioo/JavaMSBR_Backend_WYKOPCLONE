@@ -20,4 +20,8 @@ getAuthorities(String role)
 
 Purpose: A helper method to convert a role (String) to a GrantedAuthority needed for Spring Security.
 Logic: Creates a SimpleGrantedAuthority based on the role and returns it in a collection.
-*
+
+
+/api/comments/	POST	createComments
+/api/comments/by-postId/{postId}	GET	getAllCommentsForPost
+/api/comments/by-user/{userName}	GET	getCommentsByUsername

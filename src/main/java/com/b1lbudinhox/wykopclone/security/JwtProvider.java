@@ -38,17 +38,4 @@ public class JwtProvider {
     public Long getJwtExpirationInMillis() {
         return jwtExpirationInMillis;
     }
-
-//    private KeyStore keyStore;
-//    @PostConstruct
-//    public void init() {
-//        try {
-//            keyStore = KeyStore.getInstance('JKS');
-//            InputStream resourceAsStream = getClass()
-//                    .getResourceAsStream("/springblog.jks");
-//            keyStore.load(resourceAsStream, "secret".toCharArray());
-//        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException e) {
-//            throw new SpringAppException("Exception occured while loading keystore");
-//        }
-//    }
 }

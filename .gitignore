@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### ENV ###
+### ENV ####
 /src/main/resources/env.properties
 /src/main/resources/app.key
 /src/main/resources/application.key

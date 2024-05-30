@@ -94,6 +94,10 @@ public class AuthService {
                 .username(refreshTokenRequestDto.getUsername())
                 .build();
     }
+    public boolean isLoggged() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.isAuthenticated();
+    }
     @Transactional(readOnly = true)
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
