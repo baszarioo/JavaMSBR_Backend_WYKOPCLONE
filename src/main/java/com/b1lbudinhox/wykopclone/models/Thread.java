@@ -20,7 +20,7 @@ public class Thread {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank(message = "Thread's TAG is Required")
-    private String name;
+    private String tagName;
     @NotBlank(message = "Description is required")
     private String description;
     @OneToMany(fetch = FetchType.LAZY)
