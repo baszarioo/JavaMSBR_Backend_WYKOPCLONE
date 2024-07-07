@@ -69,6 +69,8 @@ public class SecurityConfig {
                             "/swagger-ui.html",
                             "/webjars/**")
                     .permitAll()
+                    .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/webjars/**")
+                    .permitAll()
                     .anyRequest()
                     .authenticated())
 //            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt) //dpc
